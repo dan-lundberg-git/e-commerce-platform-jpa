@@ -1,4 +1,4 @@
-package git.lundberg.dan.e_commerce_platform_jpa;
+package git.lundberg.dan.ecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,0 +1,81 @@
+# PostgreSQL
+
+## Database
+
+```postgresql
+-- Database: lexicon
+-- DROP DATABASE IF EXISTS lexicon;
+CREATE DATABASE lexicon
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'en_US.UTF-8'
+    LC_CTYPE = 'en_US.UTF-8'
+    LOCALE_PROVIDER = 'libc'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+COMMENT ON DATABASE lexicon
+    IS 'Lexicon Test Database';
+```
+
+## Schema
+
+```postgresql
+-- SCHEMA: ecommerce
+-- DROP SCHEMA IF EXISTS ecommerce ;
+CREATE SCHEMA if NOT EXISTS ecommerce AUTHORIZATION postgres;
+```
+
+## Tables
+
+```postgresql
+-- Table: ecommerce.addresses
+-- DROP TABLE IF EXISTS ecommerce.addresses;
+CREATE TABLE IF NOT EXISTS ecommerce.addresses (
+    id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (
+        increment 1 start 1 minvalue 1 maxvalue 9223372036854775807 cache 1
+    ),
+    street CHARACTER VARYING(100) COLLATE pg_catalog."default" NOT NULL,
+    city CHARACTER VARYING(100) COLLATE pg_catalog."default" NOT NULL,
+    zip_code CHARACTER VARYING(10) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT addresses_pkey PRIMARY KEY (id)
+) tablespace pg_default;
+
+ALTER TABLE IF EXISTS ecommerce.addresses owner TO postgres;
+
+-- Table: ecommerce.user_profiles
+-- DROP TABLE IF EXISTS ecommerce.user_profiles;
+CREATE TABLE IF NOT EXISTS ecommerce.user_profiles (
+    id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (
+        increment 1 start 1 minvalue 1 maxvalue 9223372036854775807 cache 1
+    ),
+    nickname CHARACTER VARYING(100) COLLATE pg_catalog."default" NOT NULL,
+    phone_number CHARACTER VARYING(100) COLLATE pg_catalog."default" NOT NULL,
+    bio CHARACTER VARYING(500) COLLATE pg_catalog."default",
+    CONSTRAINT user_profiles_pkey PRIMARY KEY (id)
+) tablespace pg_default;
+
+ALTER TABLE IF EXISTS ecommerce.user_profiles owner TO postgres;
+
+-- Table: ecommerce.customers
+-- DROP TABLE IF EXISTS ecommerce.customers;
+CREATE TABLE IF NOT EXISTS ecommerce.customers (
+    id BIGINT NOT NULL GENERATED ALWAYS AS IDENTITY (
+        increment 1 start 1 minvalue 1 maxvalue 9223372036854775807 cache 1
+    ),
+    first_name CHARACTER VARYING(100) COLLATE pg_catalog."default" NOT NULL,
+    last_name CHARACTER VARYING(100) COLLATE pg_catalog."default" NOT NULL,
+    email CHARACTER VARYING(150) COLLATE pg_catalog."default" NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    address_id BIGINT,
+    profile_id BIGINT,
+    CONSTRAINT customers_pkey PRIMARY KEY (id),
+    CONSTRAINT customers_email_key UNIQUE (email),
+    CONSTRAINT customers_address_id_fkey FOREIGN key (address_id) REFERENCES ecommerce.addresses (id) match simple ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT customers_profile_id_fkey FOREIGN key (profile_id) REFERENCES ecommerce.user_profiles (id) match simple ON UPDATE NO ACTION ON DELETE NO ACTION
+) tablespace pg_default;
+
+ALTER TABLE IF EXISTS ecommerce.customers owner TO postgres;
+```
