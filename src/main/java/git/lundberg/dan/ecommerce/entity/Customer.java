@@ -39,12 +39,6 @@ public class Customer {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
-    @Column(name = "address_id")
-    private Long addressId;
-
-    @Column(name = "profile_id")
-    private Long profileId;
-
     // Mandatory 1:1 — every customer needs an address
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "address_id", nullable = false, unique = true)
