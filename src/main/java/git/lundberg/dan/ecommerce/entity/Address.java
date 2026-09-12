@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "addresses")
 @Getter
@@ -14,8 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
     @Size(max = 100)
