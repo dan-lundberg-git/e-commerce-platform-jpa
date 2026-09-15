@@ -57,7 +57,7 @@ public class Customer {
     // Optional 1:1 — a customer might not have set up a profile yet
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_profile_id"), unique = true)
-    private UserProfile profile;
+    private UserProfile userProfile;
 
     @PrePersist
     void prePersist() {

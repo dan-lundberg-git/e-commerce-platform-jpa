@@ -34,4 +34,13 @@ public class Address {
     @NotNull
     @Column(name = "zip_code", nullable = false, length = 10)
     private String zipCode;
+
+    @OneToOne(mappedBy = "address")
+    private Customer customer;
+
+    public Address(String street, String city, String zipCode) {
+        this.street = street;
+        this.city = city;
+        this.zipCode = zipCode;
+    }
 }
