@@ -24,11 +24,11 @@ public class OrderItem {
     @Column(name = "price_at_purchase", precision = 10, scale = 2, nullable = false)
     private BigDecimal priceAtPurchase;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_id"), nullable = false)
     private Order order;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_product_id"), nullable = false)
     private Product product;
 }

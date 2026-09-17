@@ -53,7 +53,7 @@ public class Customer {
     private UserProfile userProfile;
 
     // For convenience and visibility, add mappedBy to Order
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
 
     @PrePersist

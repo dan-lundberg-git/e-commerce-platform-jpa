@@ -28,15 +28,19 @@ public class Order {
     @Column(name = "status", columnDefinition = "text", nullable = false)
     private OrderStatus orderStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_customer_id"), nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @PrePersist
+    @PreUpdate
     void prePersist() {
-        this.orderDate = Instant.now();
+        orderDate = Instant.now();
+        if (orderItems == null || orderItems.isEmpty()) {
+            throw new IllegalStateException("Order must have at least one OrderItem");
+        }
     }
 }
