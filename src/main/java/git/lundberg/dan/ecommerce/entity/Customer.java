@@ -1,13 +1,13 @@
 package git.lundberg.dan.ecommerce.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -30,22 +30,15 @@ public class Customer {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "first_name", nullable = false, length = 100)
+    @Column(name = "first_name", columnDefinition = "text", nullable = false)
     private String firstName;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "last_name", nullable = false, length = 100)
+    @Column(name = "last_name", columnDefinition = "text", nullable = false)
     private String lastName;
 
-    @Size(max = 150)
-    @NotNull
-    @Column(name = "email", nullable = false, length = 150)
+    @Column(name = "email", columnDefinition = "text", nullable = false)
     private String email;
 
-    @NotNull
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -58,6 +51,10 @@ public class Customer {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_profile_id"), unique = true)
     private UserProfile userProfile;
+
+    // For convenience and visibility, add mappedBy to Order
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders = new ArrayList<>();
 
     @PrePersist
     void prePersist() {

@@ -2,7 +2,6 @@ package git.lundberg.dan.ecommerce.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,18 +19,15 @@ public class UserProfile {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Size(max = 100)
     @NotNull
-    @Column(name = "nickname", nullable = false, length = 100)
+    @Column(name = "nickname", columnDefinition = "text", nullable = false)
     private String nickname;
 
-    @Size(max = 100)
     @NotNull
-    @Column(name = "phone_number", nullable = false, length = 100)
+    @Column(name = "phone_number", columnDefinition = "text", nullable = false)
     private String phoneNumber;
 
-    @Size(max = 500)
-    @Column(name = "bio", length = 500)
+    @Column(name = "bio", columnDefinition = "text")
     private String bio;
 
     @OneToOne(mappedBy = "userProfile")

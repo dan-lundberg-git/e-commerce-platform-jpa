@@ -10,12 +10,12 @@ A relationship annotation describes two separate things at once, and conflating 
 The database reality is fixed by the cardinality of the relationship (one-to-one, one-to-many, many-to-many). The Java
 convenience — whether you can navigate from both sides in code — is a design choice you make on top of it.
 
-**Owning side** = the entity whose mapping controls the actual foreign key / join table in the database. Hibernate
+**Owning side** = the entity whose mapping controls the actual foreign key/join table in the database. Hibernate
 reads/writes the FK based on what happens to the owning side's field.
 
-**Inverse (non-owning) side** = the side that just mirrors the relationship for convenience. It's marked with mappedBy,
-and
-Hibernate ignores it for the purposes of deciding what SQL to write — it exists purely so you can call
+**Inverse (non-owning) side** = the side that just mirrors the relationship for convenience. It's marked with
+`mappedBy`,
+and Hibernate ignores it for the purposes of deciding what SQL to write — it exists purely so you can call
 `author.getBooks()` instead of writing a query.
 
 ---
@@ -40,7 +40,7 @@ Two things worth noticing immediately:
 
 **Rule 1 — Finding the owning side**
 
-For `@OneToMany` / `@ManyToOne` pairs: the "many" side is always the owner. This is not a convention, it's a structural
+For `@OneToMany`/`@ManyToOne` pairs: the "many" side is always the owner. This is not a convention, it's a structural
 fact — a "one" row can't hold a single FK column pointing at multiple "many" rows, so the FK has to sit on the "many"
 table. That's why `mappedBy` always sits on the `@OneToMany` (the "one") side, pointing at the field name declared on
 the `@ManyToOne` (the "many") side.
@@ -75,9 +75,9 @@ Hibernate consults when writing to the join table.
 
 | Situation                                            | What you get                                                                                                                      |
 |------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `@ManyToOne` / `@OneToOne`                           | A plain FK column (`@JoinColumn`) on the owning table                                                                             |
+| `@ManyToOne`/`@OneToOne`                             | A plain FK column (`@JoinColumn`) on the owning table                                                                             |
 | `@ManyToMany`                                        | Always a separate join table with two FK columns — no other option, because both sides can have many matches on the other         |
-| `@OneToMany` **without** `mappedBy` (unidirectional) | ⚠️ Hibernate defaults to creating *an extra join table* instead of a FK column on the child — almost always **not** what you want |
+| `@OneToMany` **without** `mappedBy` (unidirectional) | ⚠️ Hibernate defaults to creating *an extra join table* instead of a FK column on the child — almost always **NOT** what you want |
 
 That last row is a classic gotcha. If you write a unidirectional `@OneToMany` (no matching `@ManyToOne` on the other
 side) and don't add `@JoinColumn` yourself, Hibernate silently creates a hidden join table to represent the
@@ -105,7 +105,7 @@ the other way, with `@ManyToOne` on `Book`) instead of using this pattern.
 that
 direction in code — not "it might be handy." Every bidirectional relationship costs you:
 
-- Extra discipline to keep both sides in sync (see helper methods below) — forget it and you get subtle bugs where
+- Extra discipline to keep both sides in sync (see helper methods below) — forget it, and you get subtle bugs where
   Hibernate doesn't see the change.
 - `equals()/hashCode()/toString()` hazards — Lombok's `@Data` on entities with bidirectional relationships is a common
   cause of `StackOverflowError` from infinite recursion (`Author.toString() → Book.toString() → Author.toString() → …`).
@@ -115,7 +115,7 @@ direction in code — not "it might be handy." Every bidirectional relationship 
 Rules of thumb per relationship type:
 
 - `@ManyToOne` **alone** (**no** `@OneToMany` **back-reference**): very common and usually correct. `Order → Customer`
-  doesn't need  `Customer → List<Order>` unless you actually call c`ustomer.getOrders()` somewhere — a repository method
+  doesn't need  `Customer → List<Order>` unless you actually call `customer.getOrders()` somewhere — a repository method
   `orderRepository.findByCustomerId(id)` is often simpler and lets you control paging/sorting/filtering, which a lazy
   collection doesn't.
 - `@OneToOne`: default unidirectional (FK on the dependent entity, e.g. `UserProfile → User`). Add the inverse only if
@@ -149,7 +149,7 @@ flowchart TB
 
 **Worked examples**
 
-`@OneToOne` — **bidirectional**, `User` / `UserProfile`
+`@OneToOne` — **bidirectional**, `User`/`UserProfile`
 
 ```java
 
@@ -175,7 +175,7 @@ class UserProfile {
 }
 ```
 
-`@OneToMany` / `@ManyToOne` — **bidirectional**, `Author` / `Book`
+`@OneToMany`/`@ManyToOne` — **bidirectional**, `Author`/`Book`
 
 ```java
 
@@ -212,7 +212,7 @@ class Book {
 }
 ```
 
-`@ManyToMany` — **bidirectional**, `Student` / `Course`
+`@ManyToMany` — **bidirectional**, `Student`/`Course`
 
 ```java
 
@@ -256,15 +256,13 @@ meaningful for these relationships anyway.
    causes accidental full-table loads. Explicitly set `fetch = FetchType.LAZY` on almost everything and opt into eager
    loading per-query with `JOIN FETCH` (JPQL) or `@EntityGraph` (Spring Data) when you actually need it.
 2. **Forgetting the sync helper methods on bidirectional relations**. If you only do `book.setAuthor(author)` without
-   also
-   adding `book` to `author.getBooks()`, the in-memory object graph is now inconsistent — even though the database write
-   is
-   fine, because the owning side (`Book`) is the one Hibernate actually listens to.
-3. `@Data` **(Lombok) on entities with bidirectional relationships**, causing infinite recursion in generated `toString()
-   /equals()/hashCode()`. Use `@ToString.Exclude` / `@EqualsAndHashCode.Exclude` on the relationship fields, or write
-   `equals/hashCode` by hand based on a business key (not the whole object graph, and generally not the
-   `@GeneratedValue` id
-   before it's persisted).
+   also adding `book` to `author.getBooks()`, the in-memory object graph is now inconsistent — even though the database
+   write
+   is fine, because the owning side (`Book`) is the one Hibernate actually listens to.
+3. `@Data` **(Lombok) on entities with bidirectional relationships**, causing infinite recursion in generated
+   `toString()/equals()/hashCode()`. Use `@ToString.Exclude` / `@EqualsAndHashCode.Exclude` on the relationship fields,
+   or write `equals/hashCode` by hand based on a business key (not the whole object graph, and generally not the
+   `@GeneratedValue` id before it's persisted).
 4. **Unidirectional** `@OneToMany` **without** `@JoinColumn`, silently creating an extra join table you didn't ask for
    (see Rule 2
    above).
@@ -281,13 +279,13 @@ meaningful for these relationships anyway.
 
 **Quick reference recap**
 
-| Question                                               | Answer                                                                                           |
-|--------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| Does @ManyToMany always need a join table?             | Yes, always — no alternative.                                                                    |
-| Is mappedBy always on the "one" side of a one-to-many? | Yes, always — structurally forced.                                                               |
-| Is @JoinColumn always on the "many" side?              | Yes, always — that's where the FK physically lives.                                              |
-| Who owns a @OneToOne?                                  | Whoever you put @JoinColumn on — your choice.                                                    |
-| Who owns a @ManyToMany?                                | Whoever you put @JoinTable on — your choice.                                                     |
-| Default fetch for @ManyToOne/@OneToOne?                | EAGER — override to LAZY almost always.                                                          |
-| Default fetch for @OneToMany/@ManyToMany?              | LAZY — usually leave as-is.                                                                      |
-| Bidirectional by default?                              | No — unidirectional by default, add the reverse only when you need to navigate that way in code. |
+| Question                                                 | Answer                                                                                           |
+|----------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| Does `@ManyToMany` always need a join table?             | Yes, always — no alternative.                                                                    |
+| Is `mappedBy` always on the "one" side of a one-to-many? | Yes, always — structurally forced.                                                               |
+| Is `@JoinColumn` always on the "many" side?              | Yes, always — that's where the FK physically lives.                                              |
+| Who owns a `@OneToOne`?                                  | Whoever you put `@JoinColumn` on — your choice.                                                  |
+| Who owns a `@ManyToMany`?                                | Whoever you put `@JoinTable `on — your choice.                                                   |
+| Default fetch for `@ManyToOne`/`@OneToOne`?              | `EAGER` — override to `LAZY` almost always.                                                      |
+| Default fetch for `@OneToMany`/`@ManyToMany`?            | `LAZY` — usually leave as-is.                                                                    |
+| Bidirectional by default?                                | No — unidirectional by default, add the reverse only when you need to navigate that way in code. |

@@ -1,8 +1,6 @@
 package git.lundberg.dan.ecommerce.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,19 +18,13 @@ public class Address {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "street", nullable = false, length = 100)
+    @Column(name = "street", columnDefinition = "text", nullable = false)
     private String street;
 
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "city", nullable = false, length = 100)
+    @Column(name = "city", columnDefinition = "text", nullable = false)
     private String city;
 
-    @Size(max = 10)
-    @NotNull
-    @Column(name = "zip_code", nullable = false, length = 10)
+    @Column(name = "zip_code", columnDefinition = "text", nullable = false)
     private String zipCode;
 
     @OneToOne(mappedBy = "address")
