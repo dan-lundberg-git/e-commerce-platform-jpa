@@ -27,4 +27,8 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "fk_order_id"), nullable = false)
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", foreignKey = @ForeignKey(name = "fk_product_id"), nullable = false)
+    private Product product;
 }
