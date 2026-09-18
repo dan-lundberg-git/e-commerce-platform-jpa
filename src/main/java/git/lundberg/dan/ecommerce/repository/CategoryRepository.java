@@ -16,5 +16,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findByNameIgnoreCase(String name);
 
+    // Took the liberty to ignore case sensitivity here too
     boolean existsByNameIgnoreCase(String name);
 }

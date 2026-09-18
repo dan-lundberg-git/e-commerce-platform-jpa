@@ -27,7 +27,7 @@ public class Address {
     @Column(name = "zip_code", columnDefinition = "text", nullable = false)
     private String zipCode;
 
-    @OneToOne(mappedBy = "address")
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
     private Customer customer;
 
     public Address(String street, String city, String zipCode) {

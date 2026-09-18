@@ -36,9 +36,9 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @PrePersist
-    @PreUpdate
     void prePersist() {
         orderDate = Instant.now();
+        // TODO: Move validation to the service layer when available
         if (orderItems == null || orderItems.isEmpty()) {
             throw new IllegalStateException("Order must have at least one OrderItem");
         }

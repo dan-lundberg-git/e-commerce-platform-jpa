@@ -43,13 +43,7 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    // Don't use cascade on @ManyToMany, omit entirely
     // LAZY is already default, but being explicit
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "products_promotions",
-            joinColumns = @JoinColumn(name = "promotion_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
     private Set<Promotion> promotions = new HashSet<>();
 }

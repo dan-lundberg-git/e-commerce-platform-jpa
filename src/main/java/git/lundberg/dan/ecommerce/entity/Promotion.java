@@ -37,7 +37,13 @@ public class Promotion {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    // Don't use cascade on @ManyToMany, omit entirely
     // LAZY is already default, but being explicit
-    @ManyToMany(mappedBy = "promotions", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "products_promotions",
+            joinColumns = @JoinColumn(name = "promotion_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
     private Set<Product> products = new HashSet<>();
 }

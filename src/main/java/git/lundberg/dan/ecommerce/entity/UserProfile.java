@@ -30,6 +30,6 @@ public class UserProfile {
     @Column(name = "bio", columnDefinition = "text")
     private String bio;
 
-    @OneToOne(mappedBy = "userProfile")
+    @OneToOne(mappedBy = "userProfile", fetch = FetchType.LAZY)
     private Customer customer;
 }
