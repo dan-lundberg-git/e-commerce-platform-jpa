@@ -3,6 +3,8 @@ package git.lundberg.dan.ecommerce.repository;
 import git.lundberg.dan.ecommerce.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     // TODO:
     //  Required Queries
@@ -11,4 +13,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     //  Optional / Advanced Queries
     //      - Find categories whose name contains a given keyword.
     //      - Count how many categories exist.
+
+    Optional<Category> findByNameIgnoreCase(String name);
+
+    boolean existsByNameIgnoreCase(String name);
 }
