@@ -1,6 +1,6 @@
 package git.lundberg.dan.ecommerce.repository;
 
-import git.lundberg.dan.ecommerce.entity.UserProfile;
+import git.lundberg.dan.ecommerce.domain.entity.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

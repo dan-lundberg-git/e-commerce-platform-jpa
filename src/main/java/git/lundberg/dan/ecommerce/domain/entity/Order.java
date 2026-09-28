@@ -1,6 +1,5 @@
-package git.lundberg.dan.ecommerce.entity;
+package git.lundberg.dan.ecommerce.domain.entity;
 
-import git.lundberg.dan.ecommerce.utils.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

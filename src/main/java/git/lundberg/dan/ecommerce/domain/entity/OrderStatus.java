@@ -1,4 +1,4 @@
-package git.lundberg.dan.ecommerce.utils;
+package git.lundberg.dan.ecommerce.domain.entity;
 
 public enum OrderStatus {
     CREATED,

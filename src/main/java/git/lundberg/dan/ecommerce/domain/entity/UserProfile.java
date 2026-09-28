@@ -1,4 +1,4 @@
-package git.lundberg.dan.ecommerce.entity;
+package git.lundberg.dan.ecommerce.domain.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
