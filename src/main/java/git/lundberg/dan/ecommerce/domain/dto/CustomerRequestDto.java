@@ -1,6 +1,5 @@
 package git.lundberg.dan.ecommerce.domain.dto;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -14,9 +13,6 @@ public record CustomerRequestDto(
         @NotBlank(message = "Email cannot be blank or null")
         @Email(message = "This is not a valid email address")
         String email,
-
-        @Nullable
-        String password,
 
         @NotBlank(message = "Street cannot be blank or null")
         String street,
