@@ -38,4 +38,15 @@ public class CustomerMapper {
         ));
         return customer;
     }
+
+    public void updateEntity(Customer customer, CustomerRequestDto request) {
+        customer.setFirstName(request.firstName());
+        customer.setLastName(request.lastName());
+        customer.setEmail(request.email());
+
+        Address address = customer.getAddress();
+        address.setStreet(request.street());
+        address.setCity(request.city());
+        address.setZipCode(request.zipCode());
+    }
 }
