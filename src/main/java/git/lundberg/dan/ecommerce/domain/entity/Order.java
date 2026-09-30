@@ -31,7 +31,7 @@ public class Order {
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_customer_id"), nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @PrePersist
