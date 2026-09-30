@@ -1,6 +1,6 @@
 package git.lundberg.dan.ecommerce.repository;
 
-import git.lundberg.dan.ecommerce.entity.Promotion;
+import git.lundberg.dan.ecommerce.domain.entity.Promotion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

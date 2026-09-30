@@ -1,6 +1,5 @@
-package git.lundberg.dan.ecommerce.entity;
+package git.lundberg.dan.ecommerce.domain.entity;
 
-import git.lundberg.dan.ecommerce.utils.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,7 @@ public class Order {
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "fk_customer_id"), nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @PrePersist

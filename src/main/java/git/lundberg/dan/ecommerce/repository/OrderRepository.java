@@ -1,7 +1,7 @@
 package git.lundberg.dan.ecommerce.repository;
 
-import git.lundberg.dan.ecommerce.entity.Order;
-import git.lundberg.dan.ecommerce.utils.OrderStatus;
+import git.lundberg.dan.ecommerce.domain.entity.Order;
+import git.lundberg.dan.ecommerce.domain.entity.OrderStatus;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

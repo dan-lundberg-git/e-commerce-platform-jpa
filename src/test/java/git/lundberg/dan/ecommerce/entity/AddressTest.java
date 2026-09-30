@@ -1,12 +1,11 @@
 package git.lundberg.dan.ecommerce.entity;
 
+import git.lundberg.dan.ecommerce.domain.entity.Address;
 import git.lundberg.dan.ecommerce.repository.AddressRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @DisplayName("Save address to database")
