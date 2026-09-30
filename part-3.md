@@ -144,7 +144,7 @@ Create a package `se.lexicon.ecommerceworkshop.service`. Use the **Interface/Imp
 ### 1. CustomerService (Management)
 - **Required Methods**:
     - `register(CustomerRequest request)`: Create a new customer. Check if the email is already taken.
-    - `findById(Long id)`: Return `CustomerResponse` or throw `ResourceNotFoundException`.
+    - `findById(Long id)`: Return `CustomerResponseDto` or throw `ResourceNotFoundException`.
     - `update(Long id, CustomerRequest request)`: Update details.
 
 ### 2. ProductService (Catalog)

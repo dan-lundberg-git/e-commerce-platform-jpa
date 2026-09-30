@@ -1,4 +1,4 @@
 package git.lundberg.dan.ecommerce.domain.dto;
 
-public record ProductRequest() {
+public record OrderRequestDto() {
 }

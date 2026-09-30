@@ -8,3 +8,4 @@ Build the foundation of an E-commerce system.
 
 - [Part 1](part-1.md)
 - [Part 2](part-2.md)
+- [Part 3](part-3.md)
